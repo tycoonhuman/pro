@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/*
+ * Tycoon Pro — la charte de la GMAO, pour des artisans sur leur téléphone.
+ * - ink : le bleu nuit des titres et de NORMAN.
+ * - brand : le jaune Tycoon, en fond de bouton, jamais en texte sur blanc.
+ * - brand-ink : l'ocre qui garde la teinte et se lit.
+ */
+@theme {
+  --color-ink: #111827;
+  --color-ink-soft: #1f2a44;
+  --color-brand: #ffc40e;
+  --color-brand-strong: #f0b400;
+  --color-brand-soft: #fff6d9;
+  --color-brand-line: #ffe28a;
+  --color-brand-ink: #8a6100;
+  --color-fond: #f4f5f7;
+  --color-trait: #e2e5ea;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+html,
+body {
+  background: var(--color-fond);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 2px;
+}
