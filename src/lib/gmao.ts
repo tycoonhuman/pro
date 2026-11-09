@@ -102,3 +102,15 @@ export const decider = async (id: string, accepter: boolean) =>
 
 export const resumeNorman = async (interventionId: string) =>
   (await appel<Resultat<{ texte: string }>>(`interventions/${encodeURIComponent(interventionId)}/resume`, {})) ?? echec;
+
+/** Le lien ouvert d'une intervention (D-127). */
+export type LienPublic = {
+  secteur: string;
+  description: string;
+  dateSouhaitee: string | null;
+  ouvert: boolean;
+  placesRestantes: number;
+};
+export const lireLien = (token: string) => appel<LienPublic>(`lien/${jeton(token)}`);
+export const rejoindreLien = async (token: string, saisie: Record<string, unknown>) =>
+  (await appel<{ ok: true; token: string } | { ok: false; message: string }>(`lien/${jeton(token)}/rejoindre`, saisie)) ?? echec;
