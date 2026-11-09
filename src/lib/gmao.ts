@@ -30,6 +30,13 @@ export type Mission = {
     aConfirmer: boolean;
   };
   bonUrl: string | null;
+  /** Ce que Tycoon a choisi de montrer (D-129). Absent d'une GMAO plus ancienne. */
+  documents?: DocumentsArtisan;
+};
+
+export type DocumentsArtisan = {
+  photos: { id: string; nom: string; url: string }[];
+  textes: { id: string; titre: string; texte: string }[];
 };
 
 export type OffreTycoon = {
@@ -110,6 +117,7 @@ export type LienPublic = {
   dateSouhaitee: string | null;
   ouvert: boolean;
   placesRestantes: number;
+  documents?: DocumentsArtisan;
 };
 export const lireLien = (token: string) => appel<LienPublic>(`lien/${jeton(token)}`);
 export const rejoindreLien = async (token: string, saisie: Record<string, unknown>) =>
