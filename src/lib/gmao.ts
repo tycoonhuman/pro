@@ -59,6 +59,10 @@ export type OffreTycoon = {
   nbMessages: number;
   dernierMessageAt: string | null;
   lienArtisan: string;
+  /** Négociation par NORMAN (D-131) ; absents tant que la GMAO n'est pas à jour. */
+  negocieCentimes?: number | null;
+  aDecider?: boolean;
+  historique?: { auteur: "technicien" | "norman" | "tycoon"; prixCentimes: number; at: string }[];
 };
 
 export class GmaoIndisponible extends Error {}

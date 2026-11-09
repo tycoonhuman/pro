@@ -38,6 +38,18 @@ export default async function OffrePage({ params }: { params: Promise<{ id: stri
         <div><p className="text-xs text-slate-500">Statut</p><p className="font-medium">{STATUTS[offre.statut]}</p>
           <p className="text-xs text-slate-500">Répondu : {quand(offre.reponduAt)}</p></div>
         {offre.message ? <p className="whitespace-pre-wrap text-sm text-slate-700 sm:col-span-3">{offre.message}</p> : null}
+        {offre.historique && offre.historique.length ? (
+          <div className="text-sm sm:col-span-3">
+            <p className="text-xs text-slate-500">Négociation</p>
+            <p className="font-medium">
+              {offre.historique
+                .map((p) => `${p.auteur === "technicien" ? "Artisan" : p.auteur === "norman" ? "NORMAN" : "Tycoon"} ${prix(p.prixCentimes)}`)
+                .join(" → ")}
+            </p>
+            {offre.negocieCentimes ? <p className="text-xs text-emerald-700">Accord de principe à {prix(offre.negocieCentimes)} HT, à valider par vous.</p> : null}
+            {offre.aDecider ? <p className="text-xs font-medium text-amber-800">Au-dessus du maximum : à décider ensemble.</p> : null}
+          </div>
+        ) : null}
       </section>
 
       {offre.statut === "repondue" ? <Decision offreId={offre.id} /> : null}
