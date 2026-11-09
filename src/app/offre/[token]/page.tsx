@@ -86,6 +86,7 @@ export default async function Offre({ params }: { params: Promise<{ token: strin
       {ouverte ? (
         <>
           <ReponseArtisan
+            key={`${mission.typeReponse}-${mission.prixCentimes}`}
             action={envoyerReponse.bind(null, token)}
             aConfirmer={mission.technicien.aConfirmer}
             valeurs={{
