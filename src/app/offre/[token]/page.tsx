@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { DocumentsMission } from "@/components/documents-artisan";
+import { ReglesTycoon } from "@/components/regles-tycoon";
 import { ReponseArtisan, RefusArtisan } from "@/components/formulaires-artisan";
 import { Salon } from "@/components/salon";
 import { lireMission, lireSalon } from "@/lib/gmao";
@@ -68,6 +69,8 @@ export default async function Offre({ params }: { params: Promise<{ token: strin
       </Carte>
 
       <DocumentsMission documents={mission.documents} />
+
+      <ReglesTycoon />
 
       {salon ? (
         <Salon

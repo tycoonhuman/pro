@@ -90,6 +90,8 @@ export default async function Demandes() {
                       <td className="py-2 pr-3 font-semibold">
                         {prix(offre.prixCentimes)}
                         {offre.typeReponse === "visite" ? <span className="block text-xs font-normal text-slate-500">estimatif, visite demandée</span> : null}
+                        {offre.aDecider ? <span className="mt-1 block w-fit rounded bg-amber-100 px-1.5 text-xs font-medium text-amber-900">À décider</span> : null}
+                        {offre.negocieCentimes ? <span className="block text-xs font-normal text-emerald-700">accord NORMAN : {prix(offre.negocieCentimes)}</span> : null}
                       </td>
                       <td className="py-2 pr-3">{offre.disponibilite ?? "—"}</td>
                       <td className="py-2 pr-3">{STATUTS[offre.statut]}</td>
