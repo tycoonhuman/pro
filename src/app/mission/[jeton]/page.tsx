@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { DocumentsMission } from "@/components/documents-artisan";
+import { ReglesTycoon } from "@/components/regles-tycoon";
 import { RejoindreLien } from "@/components/rejoindre-lien";
 import { lireLien } from "@/lib/gmao";
 
@@ -41,6 +42,8 @@ export default async function Mission({ params }: { params: Promise<{ jeton: str
       </section>
 
       <DocumentsMission documents={lien.documents} />
+
+      <ReglesTycoon />
       {!lien.ouvert ? (
         <p className="rounded-2xl border border-trait bg-white p-4 text-slate-700">
           Cette demande est complète ou clôturée. Merci de votre intérêt : Tycoon vous proposera d&apos;autres missions. Si vous aviez déjà
