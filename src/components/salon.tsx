@@ -3,10 +3,12 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
 export type Message = { id: string; auteur: "technicien" | "norman" | "tycoon"; contenu: string; at: string };
-export type EtatSalon = { messages: Message[]; ouvert: boolean; reprise: boolean };
+export type EtatSalon = { messages: Message[]; ouvert: boolean; reprise: boolean; normanEcrit?: boolean };
 type Retour = { ok: boolean; message: string; donnees?: EtatSalon };
 
 const RAFRAICHIR_MS = 8000;
+/** Pendant que NORMAN prépare sa réponse, on relit plus souvent. */
+const RAFRAICHIR_ATTENTE_MS = 2000;
 const heure = new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" });
 const NOMS = { norman: "NORMAN · assistant IA", tycoon: "Tycoon", technicien: "Artisan" } as const;
 
@@ -31,19 +33,23 @@ export function Salon({ cote, initial, lire, envoyer, rendre }: Props) {
     setErreur(retour.ok ? "" : retour.message);
   }, []);
 
+  const attente = Boolean(etat.normanEcrit);
   useEffect(() => {
     let actif = true;
-    const minuterie = setInterval(() => {
-      if (document.visibilityState !== "visible") return;
-      lire()
-        .then((suivant) => actif && suivant && setEtat(suivant))
-        .catch(() => undefined);
-    }, RAFRAICHIR_MS);
+    const minuterie = setInterval(
+      () => {
+        if (document.visibilityState !== "visible") return;
+        lire()
+          .then((suivant) => actif && suivant && setEtat(suivant))
+          .catch(() => undefined);
+      },
+      attente ? RAFRAICHIR_ATTENTE_MS : RAFRAICHIR_MS,
+    );
     return () => {
       actif = false;
       clearInterval(minuterie);
     };
-  }, [lire]);
+  }, [lire, attente]);
 
   useEffect(() => {
     const el = liste.current;
@@ -53,9 +59,18 @@ export function Salon({ cote, initial, lire, envoyer, rendre }: Props) {
   const soumettre = () => {
     const texte = brouillon.trim();
     if (!texte || envoi) return;
+    // Le message s'affiche tout de suite ; le serveur le confirme juste après.
+    const auteur = cote === "artisan" ? "technicien" : "tycoon";
+    const provisoire = { id: `envoi-${Date.now()}`, auteur, contenu: texte, at: new Date().toISOString() } as (typeof etat.messages)[number];
+    const avant = etat;
+    setEtat({ ...etat, messages: [...etat.messages, provisoire], normanEcrit: cote === "artisan" && !etat.reprise });
+    setBrouillon("");
     demarrer(async () => {
       const retour = await envoyer(texte);
-      if (retour.ok) setBrouillon("");
+      if (!retour.ok) {
+        setEtat(retour.donnees ?? avant);
+        setBrouillon(texte);
+      }
       appliquer(retour);
     });
   };
@@ -64,7 +79,10 @@ export function Salon({ cote, initial, lire, envoyer, rendre }: Props) {
     <section className="overflow-hidden rounded-2xl border border-trait bg-white">
       <div className="flex items-center justify-between gap-2 border-b border-trait px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-xs font-bold text-brand">N</span>
+          <span className="grid h-10 w-10 place-items-center overflow-hidden rounded-full bg-ink">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/norman.png" alt="NORMAN" className="h-8 w-auto" />
+          </span>
           <div>
             <p className="text-sm font-semibold">{cote === "artisan" ? "Discuter avec Tycoon" : "Salon avec l'artisan"}</p>
             <p className="text-xs text-slate-500">
@@ -99,7 +117,13 @@ export function Salon({ cote, initial, lire, envoyer, rendre }: Props) {
                 : "bg-ink text-white";
           return (
             <li key={message.id} className={`flex flex-col ${mien ? "items-end" : "items-start"}`}>
-              <span className="mb-1 text-[11px] text-slate-500">
+              <span className="mb-1 flex items-center gap-1.5 text-[11px] text-slate-500">
+                {message.auteur === "norman" ? (
+                  <span className="grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-ink">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/brand/norman.png" alt="" className="h-4 w-auto" />
+                  </span>
+                ) : null}
                 {NOMS[message.auteur]} · {heure.format(new Date(message.at))}
               </span>
               <p className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-[15px] leading-snug ${couleur}`}>
@@ -108,7 +132,15 @@ export function Salon({ cote, initial, lire, envoyer, rendre }: Props) {
             </li>
           );
         })}
-        {envoi && cote === "artisan" ? <li className="text-xs text-slate-500">NORMAN écrit…</li> : null}
+        {cote === "artisan" && (envoi || etat.normanEcrit) ? (
+          <li className="flex items-center gap-1.5 text-xs text-slate-500">
+            <span className="grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-ink">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/norman.png" alt="" className="h-4 w-auto" />
+            </span>
+            NORMAN écrit…
+          </li>
+        ) : null}
       </ul>
 
       {etat.ouvert ? (

@@ -8,7 +8,8 @@ import "server-only";
 export type Statut = "envoyee" | "repondue" | "declinee" | "acceptee" | "refusee";
 export type Auteur = "technicien" | "norman" | "tycoon";
 export type Message = { id: string; auteur: Auteur; contenu: string; at: string };
-export type Salon = { messages: Message[]; ouvert: boolean; reprise: boolean };
+/** `normanEcrit` : NORMAN prépare sa réponse (absent d'une GMAO plus ancienne). */
+export type Salon = { messages: Message[]; ouvert: boolean; reprise: boolean; normanEcrit?: boolean };
 export type Resultat<T = undefined> = { ok: boolean; message: string; donnees?: T };
 
 export type Mission = {
