@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { decider, ecrireTycoon, lireOffre, rendreLaMain, resumeNorman, type Resultat, type Salon } from "@/lib/gmao";
-import { fermerSession, motDePasseValide, ouvrirSession, sessionTycoon } from "@/lib/session";
+import { fermerSession, configurationManquante, motDePasseValide, ouvrirSession, sessionTycoon } from "@/lib/session";
 
 /** Chaque action de l'espace Tycoon relit la session : une action est appelable de partout. */
 async function garde() {
@@ -15,6 +15,8 @@ const echec = { ok: false, message: "Le service est indisponible, ou votre sessi
 
 export async function connexion(_avant: string | null, formData: FormData): Promise<string | null> {
   const saisi = formData.get("motDePasse");
+  const manque = configurationManquante();
+  if (manque) return `L'espace Tycoon n'est pas configuré : ${manque}`;
   if (typeof saisi !== "string" || !motDePasseValide(saisi)) {
     await new Promise((fin) => setTimeout(fin, 800));
     return "Mot de passe incorrect.";

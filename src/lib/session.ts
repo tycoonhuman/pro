@@ -23,15 +23,25 @@ function egal(a: string, b: string): boolean {
   return x.length === y.length && timingSafeEqual(x, y);
 }
 
+/** Ce qui manque à la configuration, pour le dire à l'écran plutôt que « mot de passe incorrect ». */
+export function configurationManquante(): string | null {
+  const attendu = process.env.PRO_ADMIN_PASSWORD?.trim();
+  if (!process.env.PRO_SESSION_SECRET?.trim()) return "PRO_SESSION_SECRET manque sur Vercel.";
+  if (!attendu) return "PRO_ADMIN_PASSWORD manque sur Vercel.";
+  if (attendu.length < 12) return "PRO_ADMIN_PASSWORD fait moins de 12 caractères.";
+  return null;
+}
+
 export function motDePasseValide(saisi: string): boolean {
-  const attendu = process.env.PRO_ADMIN_PASSWORD;
-  const secret = process.env.PRO_SESSION_SECRET;
+  // Les espaces au début et à la fin sont ignorés des deux côtés : un copier-coller en ajoute souvent.
+  const attendu = process.env.PRO_ADMIN_PASSWORD?.trim();
+  const secret = process.env.PRO_SESSION_SECRET?.trim();
   if (!attendu || !secret || attendu.length < 12) return false;
-  return egal(signer(saisi, secret), signer(attendu, secret));
+  return egal(signer(saisi.trim(), secret), signer(attendu, secret));
 }
 
 export async function ouvrirSession(): Promise<void> {
-  const secret = process.env.PRO_SESSION_SECRET;
+  const secret = process.env.PRO_SESSION_SECRET?.trim();
   if (!secret) return;
   const fin = String(Math.floor(Date.now() / 1000) + DUREE_S);
   (await cookies()).set(COOKIE, `${fin}.${signer(fin, secret)}`, {
@@ -48,7 +58,7 @@ export async function fermerSession(): Promise<void> {
 }
 
 export async function sessionTycoon(): Promise<boolean> {
-  const secret = process.env.PRO_SESSION_SECRET;
+  const secret = process.env.PRO_SESSION_SECRET?.trim();
   const valeur = (await cookies()).get(COOKIE)?.value;
   if (!secret || !valeur) return false;
   const [fin, signature] = valeur.split(".");
