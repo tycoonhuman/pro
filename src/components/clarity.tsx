@@ -12,7 +12,7 @@ import Script from "next/script";
  * page servie), donc il vit dans le code ; la variable Vercel, si elle existe,
  * reste prioritaire.
  */
-const CLARITY_ID = "";
+const CLARITY_ID = "zbnlabegp9";
 
 export function Clarity() {
   const id = (process.env.NEXT_PUBLIC_CLARITY_ID || CLARITY_ID).trim();
