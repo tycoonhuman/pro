@@ -16,6 +16,9 @@ export async function rejoindre(jeton: string, _avant: string | null, formData: 
       email: lire("email"),
       metier: lire("metier"),
       accord: formData.get("accord") === "on",
+      alertes: formData.get("alertes") === "on",
+      ville: String(formData.get("ville") ?? ""),
+      rayon: Number(formData.get("rayon") ?? 30),
     });
   } catch {
     return "Le service est indisponible. Réessayez dans un instant.";
