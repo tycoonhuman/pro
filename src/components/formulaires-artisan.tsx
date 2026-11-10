@@ -1,5 +1,6 @@
 "use client";
 
+import { ChampMetier } from "@/components/champs-artisan";
 import { useActionState, useState } from "react";
 
 type Etat = { ok: boolean; message: string } | null;
@@ -67,7 +68,7 @@ export function ReponseArtisan({
             <label className={LIBELLE}>Téléphone<input name="telephone" type="tel" required defaultValue={valeurs.telephone} className={CHAMP} /></label>
             <label className={LIBELLE}>Votre nom<input name="contact" defaultValue={valeurs.contact} className={CHAMP} /></label>
             <label className={LIBELLE}>Mail<input name="email" type="email" defaultValue={valeurs.email} className={CHAMP} /></label>
-            <label className={LIBELLE}>Métier<input name="metier" defaultValue={valeurs.metier} className={CHAMP} /></label>
+            <label className={LIBELLE}>Métier<ChampMetier className={CHAMP} defaultValue={valeurs.metier} /></label>
           </div>
           <label className="flex items-start gap-2 text-sm">
             <input type="checkbox" name="accord" className="mt-1 h-4 w-4" />
