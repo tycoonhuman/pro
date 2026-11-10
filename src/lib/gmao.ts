@@ -136,3 +136,7 @@ export type DemandeCreee = { ok: boolean; message: string; interventionId?: stri
 export const lireChoixDemande = () => appel<ChoixDemande>("demandes/choix");
 export const creerDemande = async (saisie: Record<string, unknown>) =>
   (await appel<DemandeCreee>("demandes", saisie)) ?? echec;
+
+/** Désinscription des alertes de zone, par le lien du mail (D-136). */
+export const desinscrireAlertes = async (jetonStop: string) =>
+  (await appel<Resultat>(`alertes/stop/${jeton(jetonStop)}`, {})) ?? echec;
