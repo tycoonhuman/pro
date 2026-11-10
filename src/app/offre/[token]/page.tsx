@@ -102,8 +102,9 @@ export default async function Offre({ params }: { params: Promise<{ token: strin
             }}
           />
           <Carte titre="Paiement">
-            Aucun acompte. La facture est réglée selon les conditions convenues, après les photos, le rapport,
-            la validation de l&apos;intervention et le contrôle de Tycoon.
+            Aucun acompte. Vous êtes payé de l&apos;instantané à 30 jours, après les photos, le rapport, la validation de
+            l&apos;intervention et le contrôle de Tycoon. Devis et factures à Tycoon Human, 99 avenue Achille Peretti,
+            92200 Neuilly-sur-Seine, SIRET 921 389 763 00019.
           </Carte>
           <RefusArtisan action={envoyerRefus.bind(null, token)} />
         </>

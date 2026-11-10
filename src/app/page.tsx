@@ -8,8 +8,8 @@ export default function Accueil() {
         NORMAN, notre assistant IA, répond à vos questions et recueille votre prix.
       </p>
       <p className="max-w-prose text-slate-700">
-        Pas d&apos;acompte : la facture est réglée après l&apos;intervention, une fois les photos et
-        le rapport transmis et le travail validé.
+        Pas d&apos;acompte : vous êtes payé de l&apos;instantané à 30 jours après l&apos;intervention, une fois
+        les photos et le rapport transmis, le travail validé et contrôlé par Tycoon.
       </p>
     </div>
   );

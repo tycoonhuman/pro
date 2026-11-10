@@ -10,8 +10,14 @@ export function ReglesTycoon() {
           numéro laissé, pas de proposition de travaux en dehors de Tycoon.
         </li>
         <li>Vous ne parlez pas de prix avec le client : tout passe par Tycoon.</li>
-        <li>Vos devis et vos factures sont adressés à <strong>Tycoon Human</strong>.</li>
-        <li>Aucun acompte : vous êtes payé après les photos, le rapport, la validation de l&apos;intervention et le contrôle de Tycoon.</li>
+        <li>
+          Vos devis et vos factures sont adressés à <strong>Tycoon Human</strong>, 99 avenue Achille Peretti, 92200 Neuilly-sur-Seine,
+          SIRET 921 389 763 00019.
+        </li>
+        <li>
+          Aucun acompte : vous êtes payé <strong>de l&apos;instantané à 30 jours</strong> après les photos, le rapport, la validation de
+          l&apos;intervention et le contrôle de Tycoon.
+        </li>
       </ul>
       <p className="mt-2 text-xs text-slate-600">
         Une question sur l&apos;intervention ? Posez-la à NORMAN, l&apos;assistant IA de Tycoon, dans la discussion de cette page.

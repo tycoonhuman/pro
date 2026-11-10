@@ -2,6 +2,8 @@
 
 import { useActionState, useState } from "react";
 
+import { ChampMetier, ChampVille } from "@/components/champs-artisan";
+
 const CHAMP = "mt-1 w-full rounded-xl border border-trait bg-white px-3 py-2.5 text-[15px]";
 const LIBELLE = "block text-sm font-medium";
 
@@ -19,7 +21,7 @@ export function RejoindreLien({ action }: { action: (avant: string | null, formD
       <div className="grid gap-3 sm:grid-cols-2">
         <label className={LIBELLE}>Entreprise ou nom<input name="societe" required maxLength={200} className={CHAMP} /></label>
         <label className={LIBELLE}>Téléphone<input name="telephone" type="tel" required maxLength={40} className={CHAMP} /></label>
-        <label className={LIBELLE}>Votre métier<input name="metier" maxLength={120} placeholder="Plombier" className={CHAMP} /></label>
+        <label className={LIBELLE}>Votre métier<ChampMetier className={CHAMP} /></label>
         <label className={LIBELLE}>Mail{alertes ? "" : " (facultatif)"}<input name="email" type="email" required={alertes} maxLength={200} className={CHAMP} /></label>
       </div>
       <div className="rounded-xl bg-brand/10 p-3">
@@ -29,7 +31,7 @@ export function RejoindreLien({ action }: { action: (avant: string | null, formD
         </label>
         {alertes ? (
           <div className="mt-2 grid gap-3 sm:grid-cols-2">
-            <label className={LIBELLE}>Votre ville ou code postal<input name="ville" required maxLength={120} placeholder="Villeurbanne ou 69100" className={CHAMP} /></label>
+            <div className={LIBELLE}>Votre ville ou code postal<ChampVille className={CHAMP} /></div>
             <label className={LIBELLE}>
               Jusqu&apos;à
               <select name="rayon" defaultValue="30" className={CHAMP}>
@@ -53,7 +55,7 @@ export function RejoindreLien({ action }: { action: (avant: string | null, formD
         {envoi ? "Un instant…" : "Accéder à la demande"}
       </button>
       <p className="text-xs text-slate-500">
-        Aucun acompte. Si Tycoon vous retient, vous créerez votre compte à la fin de l&apos;intervention pour être payé.
+        Aucun acompte : paiement de l&apos;instantané à 30 jours après l&apos;intervention. Si Tycoon vous retient, vous créerez votre compte à la fin de l&apos;intervention pour être payé.
       </p>
     </form>
   );
