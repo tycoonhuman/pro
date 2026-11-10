@@ -126,3 +126,13 @@ export type LienPublic = {
 export const lireLien = (token: string) => appel<LienPublic>(`lien/${jeton(token)}`);
 export const rejoindreLien = async (token: string, saisie: Record<string, unknown>) =>
   (await appel<{ ok: true; token: string } | { ok: false; message: string }>(`lien/${jeton(token)}/rejoindre`, saisie)) ?? echec;
+
+/** « Nouvelle demande » depuis l'espace Tycoon (D-135) : l'intervention et son lien ouvert, créés dans la GMAO. */
+export type ChoixDemande = {
+  sites: { id: string; nom: string; client: string | null; ville: string | null }[];
+  metiers: { id: string; nom: string }[];
+};
+export type DemandeCreee = { ok: boolean; message: string; interventionId?: string; numero?: string | null; lien?: string | null };
+export const lireChoixDemande = () => appel<ChoixDemande>("demandes/choix");
+export const creerDemande = async (saisie: Record<string, unknown>) =>
+  (await appel<DemandeCreee>("demandes", saisie)) ?? echec;

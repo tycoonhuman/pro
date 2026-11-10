@@ -41,13 +41,16 @@ export default async function Demandes() {
     <div className="space-y-5">
       <div className="flex items-center justify-between gap-2">
         <h1 className="text-2xl font-bold">Demandes en cours</h1>
+        <Link href="/tycoon/nouvelle" className="ml-auto rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-ink">
+          + Nouvelle demande
+        </Link>
         <form action={deconnexion}>
           <button type="submit" className="text-sm underline">Se déconnecter</button>
         </form>
       </div>
       {offres === null ? <p className="text-rose-700">La GMAO ne répond pas. Réessayez dans un instant.</p> : null}
       {offres?.length === 0 ? (
-        <p className="text-slate-600">Aucune demande. Créez-en une depuis un ticket de la GMAO, bouton « Demander un prix ».</p>
+        <p className="text-slate-600">Aucune demande. Créez-en une avec « Nouvelle demande », ou depuis la fiche d&apos;une intervention dans la GMAO.</p>
       ) : null}
 
       {groupes.map((liste) => {

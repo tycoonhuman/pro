@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
 export type Message = { id: string; auteur: "technicien" | "norman" | "tycoon"; contenu: string; at: string };
@@ -27,6 +28,15 @@ export function Salon({ cote, initial, lire, envoyer, rendre }: Props) {
   const [erreur, setErreur] = useState("");
   const [envoi, demarrer] = useTransition();
   const liste = useRef<HTMLUListElement>(null);
+  const router = useRouter();
+  const vus = useRef(initial.messages.length);
+
+  /* Une réponse de NORMAN peut avoir recopié un prix dans le formulaire (D-132) : on relit la page. */
+  useEffect(() => {
+    const nb = etat.messages.length;
+    if (cote === "artisan" && nb > vus.current && etat.messages.at(-1)?.auteur === "norman") router.refresh();
+    vus.current = nb;
+  }, [etat.messages, cote, router]);
 
   const appliquer = useCallback((retour: Retour) => {
     if (retour.donnees) setEtat(retour.donnees);
