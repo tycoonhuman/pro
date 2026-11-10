@@ -7,8 +7,15 @@ import Script from "next/script";
  * (consentement « denied ») : aucune session suivie d'une page à l'autre, et
  * le masquage strict se règle dans le projet Clarity.
  */
+/**
+ * L'identifiant du projet Clarity. Il n'est pas secret (il figure dans chaque
+ * page servie), donc il vit dans le code ; la variable Vercel, si elle existe,
+ * reste prioritaire.
+ */
+const CLARITY_ID = "zbnlabegp9";
+
 export function Clarity() {
-  const id = process.env.NEXT_PUBLIC_CLARITY_ID?.trim();
+  const id = (process.env.NEXT_PUBLIC_CLARITY_ID || CLARITY_ID).trim();
   if (!id || !/^[a-z0-9]{6,20}$/i.test(id)) return null;
   return (
     <Script id="clarity" strategy="afterInteractive">
